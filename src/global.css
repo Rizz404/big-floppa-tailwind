@@ -1,11 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 /* * Box sizing rules and reset layout */
 :root {
+  /* * Color */
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
   --accent-color: #e74c3c;
   --background-color: #ecf0f1;
   --text-color: #2c3e50;
   --border-color: #bdc3c7;
+  --hover-color: #e9ecef;
+
+  /* * Font */
+  --font-size-base: 1rem; /* Ukuran dasar, untuk teks biasa */
+  --font-size-small: 0.875rem; /* Untuk teks kecil, misalnya catatan kaki atau label (14px) */
+  --font-size-large: 1.125rem; /* Untuk teks yang sedikit lebih besar, misalnya subtitle (18px) */
+  --font-size-heading: 1.5rem; /* Untuk heading (h1, h2, dll.) (24px) */
+  --font-size-subheading: 1.25rem; /* Untuk subheading (20px) */
+  --font-size-nav: 1rem; /* Untuk item navigasi */
+  --font-size-button: 1rem; /* Untuk teks pada tombol */
+  --font-size-caption: 0.75rem; /* Untuk caption atau teks penjelas (12px) */
+
+  /* * Layout */
+  --max-width: 1200px;
+  --aside-width: 240px;
+  --aside-width-closed: 60px;
+
+  /* * Padding */
+  --padding-container: 1.5rem 1rem;
+  --padding-button: 0.625rem 1.25rem;
+  --padding-input: 0.75rem 1rem;
+  --padding-small: 0.375rem 0.625rem; /* * Buat icon sama badge  */
+  --padding-card: 1.25rem 1rem;
+  --padding-modal: 1.5rem 2rem;
 }
 
 *,
@@ -48,7 +76,8 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   background-color: var(--background-color);
-  columns: var(--text-color);
+  color: var(--text-color);
+  font-family: "Open Sans", sans-serif;
 }
 
 /* * Set shorter line heights on headings and interactive elements */
@@ -66,8 +95,11 @@ label {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
   text-wrap: balance;
+  font-family: "Montserrat", sans-serif;
 }
 
 /* * A elements that don't have a class get default styles */
@@ -100,4 +132,148 @@ textarea:not([rows]) {
 /* * Anything that has been anchored to should have extra scroll margin */
 :target {
   scroll-margin-block: 5ex;
+}
+
+/* * Ultility class */
+.base-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.base-layout.sidebar-open {
+  grid-template-columns: var(--aside-width) 1fr;
+}
+
+.base-container {
+  max-width: var(--max-width);
+  margin: auto;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.base-gap {
+  gap: 1rem;
+}
+
+.font-heading {
+  font-size: var(--font-size-heading);
+}
+
+/* * Real CSS */
+header {
+  background: var(--secondary-color);
+}
+
+.nav {
+  background: var(--primary-color);
+  padding-block: 1.2rem;
+  font-size: var(--font-size-nav);
+}
+
+.nav-brand {
+  gap: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.aside {
+  border-right: 1px solid var(--border-color);
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.aside.open {
+  width: var(--aside-width);
+}
+
+.aside.closed {
+  width: var(--aside-width-closed);
+}
+
+.sidebar {
+  padding: 1rem;
+}
+
+.sidebar-link {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.main-content {
+  padding: 1rem 1.5rem;
+  max-width: var(--max-width);
+}
+
+.breadcrumb {
+}
+
+.admin-panel {
+  margin: auto;
+  max-width: calc(100% - var(--aside-width-closed));
+  transition: max-width 0.3s ease;
+}
+
+.admin-panel.sidebar-open {
+  max-width: calc(100% - var(--aside-width));
+}
+
+.admin-panel-header {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  background-color: var(--border-color);
+}
+
+.table-header-cell {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  padding: var(--padding-input);
+  text-wrap: nowrap;
+}
+
+.table-row {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-row:hover {
+  background-color: var(--hover-color);
+}
+
+.table-cell {
+  text-align: center;
+  padding: var(--padding-input);
+}
+
+.table-cell-image {
+  width: 2.5rem;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
 }
