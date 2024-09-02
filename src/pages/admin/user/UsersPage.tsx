@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
-import { useGetUsers } from "../../hooks/userHooks";
-import { Profile, User } from "../../types/User";
+import { Link, useNavigate } from "react-router-dom";
+import { useGetUsers } from "../../../hooks/userHooks";
+import { Profile, User } from "../../../types/User";
 
 const UsersPage = () => {
+  const navigate = useNavigate();
   const { users, isLoading, isError, error } = useGetUsers();
 
   if (isLoading) {
@@ -61,7 +62,11 @@ const UsersPage = () => {
           <Link to="home">home</Link> / <Link to="user">user</Link>
         </div>
       </div>
-      <button type="button" className="button button-primary">
+      <button
+        type="button"
+        className="button button-primary"
+        onClick={() => navigate("create")}
+      >
         Add new user
       </button>
       <div className="table-container">

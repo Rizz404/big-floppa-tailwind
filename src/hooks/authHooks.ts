@@ -1,20 +1,22 @@
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../config/axiosInstance";
-import { LoginData, RegisterData, User } from "../types/User";
 import { CustomAxiosError, MutationResponse } from "../types/Response";
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
 import { toast } from "react-toastify";
+import { User } from "../types/User";
+import { LoginSchema, RegisterSchema } from "../lib/zod/authSchema";
 
 export const useRegister = () => {
   const navigate = useNavigate();
 
-  return useMutation<MutationResponse<User>, CustomAxiosError, RegisterData>({
+  return useMutation<MutationResponse<User>, CustomAxiosError, RegisterSchema>({
     mutationKey: ["register"],
     mutationFn: async (data) => {
       return (await axiosInstance.post("/auth/register", data)).data;
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      toast.success(response.message);
       navigate("/login");
     },
     onError: (error) => {
@@ -31,7 +33,7 @@ export const useLogin = () => {
   return useMutation<
     MutationResponse<User> & { accessToken: string },
     CustomAxiosError,
-    LoginData
+    LoginSchema
   >({
     mutationKey: ["register"],
     mutationFn: async (data) => {

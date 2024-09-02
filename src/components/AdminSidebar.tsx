@@ -14,7 +14,7 @@ const AdminSidebar = ({ isSidebarOpen }: AdminSidebarProps) => {
       >
         <nav className="sidebar">
           <div className="sidebar-links flex-col base-gap">
-            {["cats", "users", "cat breeds", "orders", "transactions"].map(
+            {["cats", "users", "breeds", "orders", "transactions"].map(
               (item, index) => (
                 <NavLink className="sidebar-link" to={`${item}`} key={index}>
                   {item}
