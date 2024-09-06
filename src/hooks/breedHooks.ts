@@ -22,13 +22,12 @@ export const useUpsertBreed = ({ breedId }: { breedId?: string }) => {
     mutationFn: async (data) => {
       const formData = new FormData();
 
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      if (data.image) {
-        formData.append("image", data.image);
-      }
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined || value !== null) {
+          formData.append(key, value);
+        }
+      });
 
-      console.log(formData);
       if (breedId) {
         return (await axiosInstance.patch(`/cat-breeds/${breedId}`, formData))
           .data;

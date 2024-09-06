@@ -18,6 +18,7 @@ import ShippingServiceUpsert from "./pages/admin/shippingService/ShippingService
 import CatIndex from "./pages/admin/cat/catIndex";
 import OrderIndex from "./pages/admin/order/orderIndex";
 import TransactionIndex from "./pages/admin/transaction/TransactionIndex";
+import CatUpsert from "./pages/admin/cat/catUpsert";
 
 const App = createBrowserRouter(
   createRoutesFromElements(
@@ -56,10 +57,7 @@ const App = createBrowserRouter(
 
         <Route path="cats">
           <Route index element={<CatIndex />} />
-          <Route
-            path="upsert/:shippingServiceId?"
-            element={<ShippingServiceUpsert />}
-          />
+          <Route path="upsert/:catId?" element={<CatUpsert />} />
         </Route>
 
         <Route path="orders">

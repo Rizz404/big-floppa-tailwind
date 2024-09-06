@@ -8,7 +8,7 @@ type CatStatus = "AVAILABLE" | "SOLD" | "ADOPTED";
 
 export interface Cat {
   id: string;
-  name: string | null;
+  name?: string;
   age: number;
   gender: Gender;
   description: string;
