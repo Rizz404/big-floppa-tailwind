@@ -209,7 +209,7 @@ textarea:not([rows]) {
 }
 
 .input:focus {
-  border-color: #007bff;
+  border-color: var(--primary-color);
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
@@ -220,7 +220,7 @@ textarea:not([rows]) {
 }
 
 .input.error {
-  border-color: #dc3545;
+  border-color: var(--accent-color);
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
 
@@ -249,6 +249,50 @@ textarea:not([rows]) {
   display: block;
   color: var(--accent-color);
   font-size: 0.8rem;
+}
+
+.dropzone {
+  width: 100%;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23BDC3C7FF' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+  border-radius: 0.25rem;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+  margin-bottom: 0.25rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-image 300ms ease-in-out;
+}
+
+.dropzone:hover {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23BDC3C7FF' stroke-width='4' stroke-dasharray='14%2c 6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+}
+
+.dropzone:focus {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23BDC3C7FF' stroke-width='4' stroke-dasharray='' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+}
+
+.image-names {
+  display: inline-block;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  padding: var(--padding-small);
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.select-option {
+  width: 100%;
+  border-radius: 0.25rem;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+  margin-bottom: 0.25rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.select-option:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 /* * Real CSS */
@@ -422,4 +466,17 @@ textarea:not([rows]) {
   margin: auto;
   border-radius: 0.25rem;
   /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
+}
+
+.form-with-image-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.image-list-container {
+}
+
+.image-list-container img {
+  max-width: 500px;
 }

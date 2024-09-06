@@ -9,6 +9,8 @@ import { useGetCatById, useUpsertCat } from "../../../hooks/catHooks";
 import { upsertCatSchema, UpsertCatSchema } from "../../../lib/zod/catSchema";
 import { useGetBreeds } from "../../../hooks/breedHooks";
 import { useDropzone } from "react-dropzone";
+import SelectOption from "../../../components/ui/SelectOption";
+import FileInput from "../../../components/ui/FileInput";
 
 const CatUpsert = () => {
   const [images, setImages] = useState<{
@@ -107,7 +109,7 @@ const CatUpsert = () => {
   }
 
   return (
-    <div className="cat-form-container">
+    <div className="form-with-image-container">
       <form onSubmit={handleSubmit(onSubmit)} className="flex-col base-gap">
         <TextField
           label="Name"
@@ -127,26 +129,32 @@ const CatUpsert = () => {
           {...register("description")}
           errorMessage={errors.description?.message}
         />
-        <div>
-          <label htmlFor="breed">Breed</label>
-          <select {...register("catBreed")}>
-            {breeds.map((breed) => (
-              <option key={breed.id} value={breed.id}>
-                {breed.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="gender">Gender</label>
-          <select {...register("gender")}>
-            {["MALE", "FEMALE"].map((gender) => (
-              <option key={gender} value={gender}>
-                {gender}
-              </option>
-            ))}
-          </select>
-        </div>
+        <SelectOption
+          label="Breed"
+          options={breeds.map((breed) => ({
+            label: breed.name,
+            value: breed.id,
+          }))}
+          optionPlaceHolder="Select Breed"
+          {...register("catBreed")}
+          errorMessage={errors.catBreed?.message}
+        />
+        <SelectOption
+          label="Gender"
+          options={[
+            {
+              label: "Male",
+              value: "MALE",
+            },
+            {
+              label: "Female",
+              value: "FEMALE",
+            },
+          ]}
+          optionPlaceHolder="Select Gender"
+          {...register("gender")}
+          errorMessage={errors.gender?.message}
+        />
 
         <TextField
           label="Price"
@@ -160,17 +168,28 @@ const CatUpsert = () => {
           {...register("quantity", { valueAsNumber: true })}
           errorMessage={errors.quantity?.message}
         />
-        <div>
-          <label htmlFor="status">Status</label>
-          <select {...register("status")}>
-            {["AVAILABLE", "SOLD", "ADOPTED"].map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="file-uploader">
+        <SelectOption
+          label="Status"
+          options={[
+            {
+              label: "Available",
+              value: "AVAILABLE",
+            },
+            {
+              label: "Sold",
+              value: "SOLD",
+            },
+            {
+              label: "Addopted",
+              value: "ADDOPTED",
+            },
+          ]}
+          optionPlaceHolder="Select Status"
+          {...register("gender")}
+          errorMessage={errors.gender?.message}
+        />
+
+        {/* <div className="file-uploader">
           <label>Image</label>
           <div {...getRootProps({ className: "dropzone" })}>
             <input {...getInputProps()} {...register("catPictures")} />
@@ -179,18 +198,27 @@ const CatUpsert = () => {
             </p>
           </div>
           {images &&
-            images.files.map((file, index) => (
-              <p key={index}>{file.name}</p>
-            ))}{" "}
+            images.files.map((file, index) => <p key={index}>{file.name}</p>)}
           <p>{errors.catPictures?.message?.toString()}</p>
-        </div>
-
+        </div> */}
+        <FileInput
+          label="Cat Pictures"
+          onDropFiles={onDrop}
+          accept={{
+            "image/png": [".png"],
+            "image/jpg": [".jpg"],
+            "image/jpeg": [".jpeg"],
+          }}
+          errorMessage={errors.catPictures?.message}
+          placeholder="Upload cat image"
+          imageNames={images?.files.map((file) => file.name)}
+        />
         <Button type="submit" disabled={isPending || isSubmitting}>
           Submit
         </Button>
       </form>
 
-      <div className="list-image-container">
+      <div className="image-list-container flex-col base-gap">
         {images?.previews.map((image, index) => (
           <img key={index} src={image} alt={image} />
         ))}

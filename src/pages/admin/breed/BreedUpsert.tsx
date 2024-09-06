@@ -10,7 +10,7 @@ import {
   upsertBreedSchema,
   UpsertBreedSchema,
 } from "../../../lib/zod/breedSchema";
-import { useDropzone } from "react-dropzone";
+import FileInput from "../../../components/ui/FileInput";
 
 const BreedUpsert = () => {
   const { breedId } = useParams();
@@ -41,15 +41,6 @@ const BreedUpsert = () => {
       shouldTouch: true,
     });
   };
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: {
-      "image/png": [".png"],
-      "image/jpg": [".jpg"],
-      "image/jpeg": [".jpeg"],
-    },
-  });
 
   const onSubmit: SubmitHandler<UpsertBreedSchema> = (data) => {
     mutate(data);
@@ -92,17 +83,16 @@ const BreedUpsert = () => {
           errorMessage={errors.description?.message}
         />
 
-        <div className="profile-pict-upload-container">
-          <label>Image</label>
-          <div {...getRootProps({ className: "dropzone" })}>
-            <input {...getInputProps()} {...register("image")} />
-            <p>
-              Drag 'n' drop your profile picture here, or click to select file
-            </p>
-          </div>
-          {image && <p>{image?.file?.name}</p>}
-          <p>{errors.image?.message?.toString()}</p>
-        </div>
+        <FileInput
+          label="Image"
+          onDropFiles={onDrop}
+          accept={{
+            "image/png": [".png"],
+            "image/jpg": [".jpg"],
+            "image/jpeg": [".jpeg"],
+          }}
+          errorMessage={errors.image?.message}
+        />
 
         {image ? (
           <img src={image.preview} alt={image?.file?.name} />
