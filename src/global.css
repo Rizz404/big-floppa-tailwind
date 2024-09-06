@@ -23,7 +23,7 @@
   --font-size-caption: 0.75rem; /* Untuk caption atau teks penjelas (12px) */
 
   /* * Layout */
-  --max-width: 1200px;
+  --max-width: 1280px;
   --aside-width: 240px;
   --aside-width-closed: 60px;
 
@@ -78,6 +78,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: "Open Sans", sans-serif;
+  overflow-y: scroll;
 }
 
 /* * Set shorter line heights on headings and interactive elements */
@@ -135,21 +136,6 @@ textarea:not([rows]) {
 }
 
 /* * Ultility class */
-.base-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-}
-
-.base-layout.sidebar-open {
-  grid-template-columns: var(--aside-width) 1fr;
-}
-
-.base-container {
-  max-width: var(--max-width);
-  margin: auto;
-}
-
 .flex-between {
   display: flex;
   justify-content: space-between;
@@ -266,67 +252,122 @@ textarea:not([rows]) {
 }
 
 /* * Real CSS */
-header {
-  background: var(--secondary-color);
+.admin-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: "header" "main";
 }
 
-.nav {
+.admin-layout.admin-aside-open {
+  grid-template-columns: var(--aside-width) 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar main";
+}
+
+.admin-header {
+  position: fixed;
+  grid-area: header;
   background: var(--primary-color);
+  width: 100%;
+}
+
+.admin-nav {
+  max-width: var(--max-width);
   padding-block: 1.2rem;
   font-size: var(--font-size-nav);
+  margin: auto;
 }
 
-.nav-brand {
+.admin-nav-left {
+}
+
+.icon-button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  transition: opacity 300ms ease-in-out;
+}
+
+.icon-button:hover {
+  opacity: 70%;
+}
+
+.admin-nav-brand {
   gap: 0.5rem;
   font-size: 1.5rem;
 }
 
-.aside {
+.admin-aside {
+  width: var(--aside-width);
+  grid-area: sidebar;
   border-right: 1px solid var(--border-color);
   transition: width 0.3s ease;
+  margin-top: 4.5rem;
   overflow: hidden;
 }
 
-.aside.open {
+.admin-aside-brand {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--border-color);
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
   width: var(--aside-width);
 }
 
-.aside.closed {
-  width: var(--aside-width-closed);
+.admin-aside-nav-links {
 }
 
-.sidebar {
-  padding: 1rem;
+.admin-aside-nav {
 }
 
-.sidebar-link {
-  border: 1px solid var(--border-color);
-  padding: 0.5rem;
+.admin-aside-nav-link {
+  padding-block: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   border-radius: 2px;
   text-align: center;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 300ms ease-in-out;
 }
 
-.main-content {
-  padding: 1rem 1.5rem;
-  max-width: var(--max-width);
+.admin-aside-nav-link:hover {
+  background-color: var(--border-color);
 }
-
-.breadcrumb {
+.admin-aside-nav-link span {
+  padding-inline: 1rem;
 }
 
 .admin-panel {
-  margin: auto;
-  max-width: calc(100% - var(--aside-width-closed));
+  grid-area: main;
   transition: max-width 0.3s ease;
+  margin-top: 4.5rem;
+  margin-inline: 1.5rem;
+  width: var(--max-width);
+  padding: var(--padding-container);
 }
 
-.admin-panel.sidebar-open {
-  max-width: calc(100% - var(--aside-width));
+.admin-panel.admin-aside-open {
+  grid-area: main;
+  width: calc(var(--max-width) - var(--aside-width));
+  padding: 1rem 0;
 }
 
 .admin-panel-header {
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 1rem;
+}
+
+.breadcrumb {
 }
 
 .table-container {
@@ -373,4 +414,12 @@ header {
   border-radius: 999px;
   object-fit: cover;
   border: 2px solid var(--border-color);
+}
+
+.admin-upsert-form {
+  padding: var(--padding-container);
+  /* max-width: 720px; */
+  margin: auto;
+  border-radius: 0.25rem;
+  /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
 }

@@ -10,3 +10,12 @@ export interface Breed {
 
   author: Omit<User, "profile">;
 }
+
+export interface BreedFollower {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  user: Omit<User, "profile">;
+  breed: Breed;
+}

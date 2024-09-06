@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useGetUsers } from "../../../hooks/userHooks";
 import { Profile, User } from "../../../types/User";
+import Button from "../../../components/ui/Button";
 
-const UsersPage = () => {
+const UsersIndex = () => {
   const navigate = useNavigate();
   const { users, isLoading, isError, error } = useGetUsers();
 
@@ -62,13 +63,9 @@ const UsersPage = () => {
           <Link to="home">home</Link> / <Link to="user">user</Link>
         </div>
       </div>
-      <button
-        type="button"
-        className="button button-primary"
-        onClick={() => navigate("create")}
-      >
+      <Button type="button" onClick={() => navigate("upsert")}>
         Add new user
-      </button>
+      </Button>
       <div className="table-container">
         <table className="data-table">
           <thead className="table-header">
@@ -84,7 +81,11 @@ const UsersPage = () => {
           </thead>
           <tbody className="table-body">
             {users.map((user, index) => (
-              <tr key={user.id} className="table-row">
+              <tr
+                key={user.id}
+                className="table-row"
+                onClick={() => navigate(`upsert/${user.id}`)}
+              >
                 <td className="table-cell">{index + 1}</td>
                 {allKeysUser.map((key) => (
                   <td key={key} className="table-cell">
@@ -114,4 +115,4 @@ const UsersPage = () => {
     </>
   );
 };
-export default UsersPage;
+export default UsersIndex;

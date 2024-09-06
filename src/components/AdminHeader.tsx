@@ -1,4 +1,6 @@
 import { CgNotes } from "react-icons/cg";
+import Button from "./ui/Button";
+import { BiMenu } from "react-icons/bi";
 
 interface AdminHeaderProps {
   isSidebarOpen: boolean;
@@ -7,17 +9,19 @@ interface AdminHeaderProps {
 
 const AdminHeader = ({ isSidebarOpen, toggleSidebar }: AdminHeaderProps) => {
   return (
-    <header className="header">
-      <nav className="nav base-container flex-between base-gap">
-        <div className="nav-brand flex-between">
-          <CgNotes className="logo" />
-          <p className="logo-text">Big Floppa</p>
+    <header className="admin-header">
+      <nav className="admin-nav base-container flex-between base-gap">
+        <div className="admin-nav-left flex-between base-gap">
+          {/* <button type="button" onClick={toggleSidebar} className="icon-button">
+            <BiMenu />
+          </button> */}
+          <div className="admin-nav-brand flex-between">
+            <CgNotes className="logo" />
+            <p className="logo-text">Big Floppa</p>
+          </div>
         </div>
-        <div className="nav-auth">
-          <button type="button" onClick={toggleSidebar}>
-            {isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
-          </button>
-          <button type="button">Logout</button>
+        <div className="admin-nav-auth">
+          <Button type="button">Logout</Button>
         </div>
       </nav>
     </header>

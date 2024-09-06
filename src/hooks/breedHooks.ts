@@ -20,14 +20,24 @@ export const useUpsertBreed = ({ breedId }: { breedId?: string }) => {
   >({
     mutationKey: ["create", "cat-breed"],
     mutationFn: async (data) => {
-      if (breedId) {
-        return (await axiosInstance.patch(`/cat-breeds/${breedId}`, data)).data;
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      if (data.image) {
+        formData.append("image", data.image);
       }
-      return (await axiosInstance.post("/cat-breeds", data)).data;
+
+      console.log(formData);
+      if (breedId) {
+        return (await axiosInstance.patch(`/cat-breeds/${breedId}`, formData))
+          .data;
+      }
+      return (await axiosInstance.post("/cat-breeds", formData)).data;
     },
     onSuccess: (response) => {
       toast.success(response.message);
-      navigate("/admin/cat-breeds");
+      navigate("/admin/breeds", { replace: true });
     },
     onError: (error) => {
       toast.error(error.response?.data.message);
@@ -55,11 +65,12 @@ export const useGetBreeds = () => {
   };
 };
 
-export const useGetBreedById = ({ breedId }: { breedId: string }) => {
+export const useGetBreedById = ({ breedId }: { breedId?: string }) => {
   return useQuery<Breed, CustomAxiosError>({
     queryKey: ["breed", breedId],
     queryFn: async () => {
-      return (await axiosInstance.get(`/breeds/${breedId}`)).data;
+      return (await axiosInstance.get(`/cat-breeds/${breedId}`)).data;
     },
+    enabled: !!breedId,
   });
 };

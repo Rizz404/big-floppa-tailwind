@@ -51,11 +51,12 @@ export const useGetUsers = () => {
   };
 };
 
-export const useGetUserById = ({ userId }: { userId: string }) => {
+export const useGetUserById = ({ userId }: { userId?: string }) => {
   return useQuery<User, CustomAxiosError>({
     queryKey: ["user", userId],
     queryFn: async () => {
       return (await axiosInstance.get(`/users/${userId}`)).data;
     },
+    enabled: !!userId,
   });
 };

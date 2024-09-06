@@ -11,17 +11,19 @@ const AdminLayout = () => {
   };
   return (
     <>
-      <AdminHeader
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-      />
       <div
-        className={`base-layout ${
-          isSidebarOpen ? "sidebar-open" : "sidebar-closed"
+        className={`admin-layout ${
+          !isSidebarOpen ? "admin-aside-closed" : "admin-aside-open"
         }`}
       >
         <AdminSidebar isSidebarOpen={isSidebarOpen} />
-        <main className={`admin-panel ${isSidebarOpen ? "sidebar-open" : ""}`}>
+        <AdminHeader
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+        />
+        <main
+          className={`admin-panel ${isSidebarOpen ? "admin-aside-open" : ""}`}
+        >
           <Outlet />
         </main>
       </div>

@@ -1,9 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useGetBreeds } from "../../../hooks/breedHooks";
+import Button from "../../../components/ui/Button";
 
 const BreedIndex = () => {
   const navigate = useNavigate();
   const { breeds, isLoading, isError, error } = useGetBreeds();
+
+  if (isLoading) {
+    return <p>Loading</p>;
+  }
+
+  if (isError) {
+    return <p>{error.message}</p>;
+  }
 
   return (
     <>
@@ -13,13 +22,9 @@ const BreedIndex = () => {
           <Link to="home">home</Link> / <Link to="user">user</Link>
         </div>
       </div>
-      <button
-        type="button"
-        className="button button-primary"
-        onClick={() => navigate("create")}
-      >
+      <Button type="button" onClick={() => navigate("upsert")}>
         Add new breed
-      </button>
+      </Button>
       <div className="table-container">
         <table className="data-table">
           <thead className="table-header">
