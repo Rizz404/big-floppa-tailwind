@@ -19,12 +19,14 @@ import CatIndex from "./pages/admin/cat/catIndex";
 import OrderIndex from "./pages/admin/order/orderIndex";
 import TransactionIndex from "./pages/admin/transaction/TransactionIndex";
 import CatUpsert from "./pages/admin/cat/catUpsert";
+import CatDetailPage from "./pages/user/CatDetailPage";
 
 const App = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="/cat/:catId" element={<CatDetailPage />} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<DashboardPage />} />

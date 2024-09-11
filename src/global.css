@@ -195,12 +195,63 @@ textarea:not([rows]) {
   font-size: 1.125rem;
 }
 
+.input-container {
+  position: relative;
+}
+
 .input {
   width: 100%;
   border: 1px solid var(--border-color);
   border-radius: 0.25rem;
   transition: border-color 300ms ease, box-shadow 300ms ease;
   margin-bottom: 0.25rem;
+}
+
+.show-password-button {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: inherit;
+  outline: none;
+  cursor: pointer;
+}
+
+.number-button {
+  position: absolute;
+  background: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0.25rem;
+  transition: background-color 300ms ease-in;
+}
+
+.number-button:hover {
+  background: var(--hover-color);
+}
+
+.number-button:first-child {
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.number-button:last-child {
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.input-search-logo {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .input::placeholder {
@@ -237,6 +288,18 @@ textarea:not([rows]) {
 .input.lg {
   padding: 0.75rem 1.5rem;
   font-size: 1.125rem;
+}
+
+.input.has-icon-left {
+  padding-left: 2.5rem;
+}
+
+.input.has-icon-right {
+  padding-right: 2.5rem;
+}
+
+.input.has-icon-both {
+  padding-inline: 2.5rem;
 }
 
 .label {
@@ -296,6 +359,7 @@ textarea:not([rows]) {
 }
 
 /* * Real CSS */
+/* * ################### ADMIN ################### */
 .admin-layout {
   position: relative;
   display: grid;
@@ -479,4 +543,194 @@ textarea:not([rows]) {
 
 .image-list-container img {
   max-width: 500px;
+}
+
+/* * ################### USER ################### */
+.layout {
+  position: relative;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: var(--primary-color);
+  z-index: 999;
+}
+
+.nav {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-block: 1rem;
+  font-size: var(--font-size-nav);
+}
+
+.nav-brand {
+  font-size: 1.5rem;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+.nav-center {
+  flex-grow: 1;
+  max-width: 650px;
+  margin-inline: auto;
+}
+
+.main-container {
+  max-width: var(--max-width);
+  margin-top: 5rem;
+  margin-inline: auto;
+  padding: var(--padding-container);
+}
+
+.hero-section {
+}
+
+.carousel-container {
+  position: relative;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+.carousel-images {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+.carousel-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  object-position: center;
+  flex-shrink: 0;
+}
+.carousel-nav {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-inline: 1rem;
+}
+.carousel-nav button {
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  background: inherit;
+  transition: background-color 300ms ease-in;
+}
+.carousel-nav button:hover {
+  background: var(--hover-color);
+}
+
+.cat-list-section {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.cat-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.cat-card:hover {
+  transform: translateY(-5px);
+}
+
+.cat-image-container {
+  position: relative;
+  height: 200px;
+}
+
+.cat-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cat-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.cat-status.available {
+  background-color: #e6f4ea;
+  color: #1e8e3e;
+}
+
+.cat-status.sold {
+  background-color: #fce8e6;
+  color: #d93025;
+}
+
+.cat-status.adopted {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
+
+.cat-info {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.cat-name {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #202124;
+}
+
+.cat-breed {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.cat-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.cat-price {
+  font-weight: bold;
+  color: #1e8e3e;
+}
+
+.cat-age {
+  color: #1a73e8;
+}
+
+.cat-interaction {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 1rem;
+}
+
+.cat-interaction button {
+  border: none;
+  background: inherit;
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: var(--accent-color);
+}
+
+.cat-detail-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 }
