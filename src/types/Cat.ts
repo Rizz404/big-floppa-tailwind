@@ -20,7 +20,7 @@ export interface Cat {
 
   user: User;
   catBreed: Breed;
-  catPictures: CatPicture[];
+  catPictures?: CatPicture[];
   cartItems: CartItem[];
   orderItems: OrderItem[];
 }

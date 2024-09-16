@@ -1,14 +1,25 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetCatById } from "../../hooks/catHooks";
 import TextField from "../../components/ui/TextField";
 import Button from "../../components/ui/Button";
 import { useState } from "react";
+import useBuyCat from "../../hooks/useBuyCat";
 
 const CatDetailPage = () => {
   const [quantity, setQuantity] = useState(0);
   const { catId } = useParams();
+  const { setCatSelected } = useBuyCat();
+  const navigate = useNavigate();
 
   const { data: cat, isLoading, isError, error } = useGetCatById({ catId });
+
+  const handleBuyNow = () => {
+    if (cat) {
+      setCatSelected({ amount: quantity, cat });
+    }
+    setQuantity(0);
+    navigate("/buy-now");
+  };
 
   if (isLoading) {
     return <p>Loading</p>;
@@ -23,7 +34,7 @@ const CatDetailPage = () => {
       {cat && (
         <>
           <div className="cat-detail-picture">
-            <img src={cat.catPictures[0].url} alt="" />
+            <img src={cat.catPictures && cat.catPictures[0].url} alt="" />
             <div className="cat-picture-preview"></div>
           </div>
           <div className="cat-detail-info">
@@ -48,7 +59,13 @@ const CatDetailPage = () => {
               <p>Subtotal: {quantity * cat.price}</p>
               <div className="flex-col base-gap">
                 <Button type="button">Add to cart</Button>
-                <Button type="button">Buy now</Button>
+                <Button
+                  type="button"
+                  onClick={handleBuyNow}
+                  disabled={quantity <= 0}
+                >
+                  Buy now
+                </Button>
               </div>
             </div>
           </div>

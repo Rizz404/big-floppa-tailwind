@@ -20,13 +20,34 @@ import OrderIndex from "./pages/admin/order/orderIndex";
 import TransactionIndex from "./pages/admin/transaction/TransactionIndex";
 import CatUpsert from "./pages/admin/cat/catUpsert";
 import CatDetailPage from "./pages/user/CatDetailPage";
+import BuyCatProvider from "./context/BuyCatContext";
+import BuyNowPage from "./pages/user/BuyNowPage";
+import AuthPage from "./pages/user/AuthPage";
+import UserProfilePage from "./pages/user/UserProfilePage";
 
 const App = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="/cat/:catId" element={<CatDetailPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/user-profile" element={<UserProfilePage />} />
+        <Route
+          path="/cat/:catId"
+          element={
+            <BuyCatProvider>
+              <CatDetailPage />
+            </BuyCatProvider>
+          }
+        />
+        <Route
+          path="/buy-now"
+          element={
+            <BuyCatProvider>
+              <BuyNowPage />
+            </BuyCatProvider>
+          }
+        />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<DashboardPage />} />

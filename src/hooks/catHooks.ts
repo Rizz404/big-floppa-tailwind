@@ -8,7 +8,7 @@ import {
 import { Cat } from "../types/Cat";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { UpsertCatSchema } from "../lib/zod/catSchema";
+import { BuyCatNow, UpsertCatSchema } from "../lib/zod/catSchema";
 
 export const useUpsertCat = ({ catId }: { catId?: string }) => {
   const navigate = useNavigate();
@@ -38,6 +38,25 @@ export const useUpsertCat = ({ catId }: { catId?: string }) => {
     onSuccess: (response) => {
       toast.success(response.message);
       navigate("/admin/cats");
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
+  });
+};
+
+export const useBuyCatNow = ({ catId }: { catId?: string }) => {
+  const navigate = useNavigate();
+
+  return useMutation<MutationResponse<Cat>, CustomAxiosError, BuyCatNow>({
+    mutationKey: ["post", "buy-now"],
+    mutationFn: async (data) => {
+      return (await axiosInstance.post(`/cats/buy-now/${catId}`, data)).data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+      navigate("/", { replace: true });
     },
     onError: (error) => {
       toast.error(error.response?.data.message);

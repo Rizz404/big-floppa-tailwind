@@ -1,6 +1,7 @@
 import { CgNotes } from "react-icons/cg";
 import Button from "./ui/Button";
 import { BiMenu } from "react-icons/bi";
+import { useLogout } from "../hooks/authHooks";
 
 interface AdminHeaderProps {
   isSidebarOpen: boolean;
@@ -8,6 +9,8 @@ interface AdminHeaderProps {
 }
 
 const AdminHeader = ({ isSidebarOpen, toggleSidebar }: AdminHeaderProps) => {
+  const { mutate, isPending } = useLogout();
+
   return (
     <header className="admin-header">
       <nav className="admin-nav base-container flex-between base-gap">
@@ -21,7 +24,9 @@ const AdminHeader = ({ isSidebarOpen, toggleSidebar }: AdminHeaderProps) => {
           </div>
         </div>
         <div className="admin-nav-auth">
-          <Button type="button">Logout</Button>
+          <Button type="button" onClick={() => mutate()} disabled={isPending}>
+            Logout
+          </Button>
         </div>
       </nav>
     </header>

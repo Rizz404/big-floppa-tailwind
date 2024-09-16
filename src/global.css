@@ -163,6 +163,11 @@ textarea:not([rows]) {
   transition: background-color 300ms ease;
 }
 
+.btn:disabled {
+  opacity: 50%;
+  cursor: not-allowed;
+}
+
 .btn.btn-primary {
   background-color: #007bff;
   color: white;
@@ -414,7 +419,7 @@ textarea:not([rows]) {
   width: var(--aside-width);
   grid-area: sidebar;
   border-right: 1px solid var(--border-color);
-  transition: width 0.3s ease;
+  transition: width 300ms ease;
   margin-top: 4.5rem;
   overflow: hidden;
 }
@@ -457,7 +462,7 @@ textarea:not([rows]) {
 
 .admin-panel {
   grid-area: main;
-  transition: max-width 0.3s ease;
+  transition: max-width 300ms ease;
   margin-top: 4.5rem;
   margin-inline: 1.5rem;
   width: var(--max-width);
@@ -577,6 +582,13 @@ textarea:not([rows]) {
   margin-inline: auto;
 }
 
+.nav-profile-picture {
+  width: 2rem;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 999px;
+}
+
 .main-container {
   max-width: var(--max-width);
   margin-top: 5rem;
@@ -595,7 +607,7 @@ textarea:not([rows]) {
 }
 .carousel-images {
   display: flex;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 300ms ease-in-out;
 }
 .carousel-image {
   width: 100%;
@@ -636,7 +648,7 @@ textarea:not([rows]) {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 300ms ease;
   cursor: pointer;
 }
 
@@ -733,4 +745,66 @@ textarea:not([rows]) {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+}
+
+.buy-now-section {
+}
+
+.buy-now-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  position: relative;
+}
+
+.left-container {
+}
+
+.right-container {
+  border: 1px solid blue;
+}
+
+.cat-selected-container {
+  padding: var(--padding-container);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.cat-selected {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.cat-selected img {
+  max-width: 100px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+}
+
+.auth-section {
+  max-width: 512px;
+  margin: auto;
+}
+
+.auth-section form {
+  border: 1px solid var(--border-color);
+  padding: var(--padding-container);
+  border-radius: 0.25rem;
+}
+
+.auth-section form span {
+  text-align: right;
+}
+
+.username-field {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease-out, opacity 300ms ease-out;
+  margin: 0;
+}
+.username-field.visible {
+  max-height: 100px;
+  opacity: 1;
 }

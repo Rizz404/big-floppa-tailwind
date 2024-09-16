@@ -33,3 +33,11 @@ export const upsertCatSchema = z.object({
 });
 
 export type UpsertCatSchema = z.infer<typeof upsertCatSchema>;
+
+export const buyCatNow = z.object({
+  amount: z.number(),
+  paymentMethodId: z.string().uuid(),
+  shippingServiceId: z.string().uuid(),
+});
+
+export type BuyCatNow = z.infer<typeof buyCatNow>;

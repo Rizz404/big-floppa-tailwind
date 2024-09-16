@@ -18,7 +18,7 @@ export interface Profile {
   id: string;
   firstname: string | null;
   lastname: string | null;
-  profilePicture: string | null;
+  profilePicture?: string | null;
   gender: "MALE" | "FEMALE";
   age: string | null;
   phoneNumber: string | null;
