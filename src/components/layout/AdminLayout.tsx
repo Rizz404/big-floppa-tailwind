@@ -1,15 +1,18 @@
 import { useState } from "react";
 import AdminHeader from "../AdminHeader";
 import AdminSidebar from "../AdminSidebar";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { UserRole } from "../../types/User";
 
 const AdminLayout = () => {
+  const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
-  return (
+  return user?.role === UserRole.ADMIN ? (
     <div
       className={`admin-layout ${
         !isSidebarOpen ? "admin-aside-closed" : "admin-aside-open"
@@ -26,6 +29,8 @@ const AdminLayout = () => {
         <Outlet />
       </main>
     </div>
+  ) : (
+    <Navigate to="/" replace />
   );
 };
 export default AdminLayout;

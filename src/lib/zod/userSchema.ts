@@ -11,15 +11,15 @@ export const createUserSchema = registerSchema.extend({
 export type CreateUserSchema = z.infer<typeof createUserSchema>;
 
 export const updateUserProfile = z.object({
-  username: z.string(),
-  email: z.string(),
-  firstname: z.string(),
-  lastname: z.string(),
-  gender: z.enum(["MALE", "FEMALE"]),
-  age: z.number(),
-  phoneNumber: z.string(),
-  bio: z.string(),
-  profilePicture: z.instanceof(File),
+  username: z.string().optional(),
+  email: z.string().optional(),
+  firstname: z.string().optional(),
+  lastname: z.string().optional(),
+  gender: z.enum(["MALE", "FEMALE"]).optional(),
+  age: z.number().optional(),
+  phoneNumber: z.string().optional(),
+  bio: z.string().optional(),
+  profilePicture: z.instanceof(File).optional(),
 });
 
 export type UpdateUserProfile = z.infer<typeof updateUserProfile>;

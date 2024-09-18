@@ -6,9 +6,10 @@ import {
   PaginatedResponse,
 } from "../types/Response";
 import { User } from "../types/User";
-import { CreateUserSchema } from "../lib/zod/userSchema";
+import { CreateUserSchema, UpdateUserProfile } from "../lib/zod/userSchema";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import useAuth from "./useAuth";
 
 export const useCreateUser = () => {
   const navigate = useNavigate();
@@ -58,5 +59,28 @@ export const useGetUserById = ({ userId }: { userId?: string }) => {
       return (await axiosInstance.get(`/users/${userId}`)).data;
     },
     enabled: !!userId,
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const { setUser } = useAuth();
+
+  return useMutation<
+    MutationResponse<User>,
+    CustomAxiosError,
+    UpdateUserProfile
+  >({
+    mutationKey: ["patch", "user-profile"],
+    mutationFn: async (data) => {
+      return (await axiosInstance.patch("/users/profile", data)).data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+      setUser(response.data);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
   });
 };

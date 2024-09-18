@@ -37,9 +37,15 @@ const SelectOption = forwardRef<HTMLSelectElement, SelectOptionProps>(
         <label htmlFor={id} className={labelClassName}>
           {label}
         </label>
-        <select id={id} ref={ref} className={selectOptionClassName} {...props}>
+        <select
+          id={id}
+          ref={ref}
+          className={selectOptionClassName}
+          {...props}
+          defaultValue=""
+        >
           {optionPlaceHolder && (
-            <option value="" selected disabled>
+            <option value="" disabled>
               {optionPlaceHolder}
             </option>
           )}

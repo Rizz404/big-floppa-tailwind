@@ -808,3 +808,8 @@ textarea:not([rows]) {
   max-height: 100px;
   opacity: 1;
 }
+
+.user-profile-section {
+  max-width: 640px;
+  margin: auto;
+}
