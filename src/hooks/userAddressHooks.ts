@@ -29,7 +29,7 @@ export const useCreateUserAddress = () => {
   });
 };
 
-export const useGetUsers = () => {
+export const useGetUserAddresses = () => {
   const { data, ...rest } = useQuery<
     PaginatedResponse<UserAddress>,
     CustomAxiosError

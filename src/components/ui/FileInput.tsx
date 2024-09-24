@@ -10,6 +10,12 @@ interface FileInputProps extends DropzoneOptions {
   imageNames?: string[];
 }
 
+const fileInputSizeStyles = {
+  sm: "text-sm py-1 px-2",
+  md: "text-base py-2 px-3",
+  xl: "text-lg py-3 px-4",
+};
+
 const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
   (
     {
@@ -21,23 +27,21 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
       imageNames,
       ...props
     },
-    ref
+    ref,
   ) => {
     const { getRootProps, getInputProps } = useDropzone({
       ...props,
       onDrop: (acceptedFiles: File[]) => onDropFiles(acceptedFiles),
     });
 
-    const dropzoneClassName = `dropzone ${inputSize} ${
-      errorMessage ? "error" : ""
-    }`;
-    const labelClassName = `label`;
-    const errorMessageClassName = `error-message`;
+    const styles = {
+      inputStyle: ` w-full rounded border border-dashed cursor-pointer ${fileInputSizeStyles[inputSize]} ${errorMessage ? "border-red-500" : "border-gray-500"}`,
+    };
 
     return (
-      <div className="fileinput-container">
-        {label && <label className={labelClassName}>{label}</label>}
-        <div {...getRootProps({ className: dropzoneClassName })}>
+      <>
+        {label && <label className="mb-1 block font-medium">{label}</label>}
+        <div {...getRootProps({ className: styles.inputStyle })}>
           <input {...getInputProps()} ref={ref} />
           <p>
             {placeholder ||
@@ -46,14 +50,14 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
         </div>
         {imageNames &&
           imageNames.map((name) => (
-            <p key={name} className="image-names">
+            <p key={name} className="">
               {name}
             </p>
           ))}
-        <span className={errorMessageClassName}>{errorMessage}</span>
-      </div>
+        <span className="mt-1 text-sm text-red-500">{errorMessage}</span>
+      </>
     );
-  }
+  },
 );
 
 export default FileInput;

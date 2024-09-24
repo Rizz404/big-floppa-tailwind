@@ -2,12 +2,20 @@ import { InputHTMLAttributes, forwardRef, useState, useEffect } from "react";
 import { BiSearch, BiMinus, BiPlus } from "react-icons/bi";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
+type InputSize = "sm" | "md" | "xl";
+
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  inputSize?: "sm" | "md" | "xl";
+  inputSize?: InputSize;
   type?: "text" | "password" | "search" | "number";
   errorMessage?: string;
   label?: string;
 }
+
+const inputSizeStyles = {
+  sm: "text-sm py-1 px-2",
+  md: "text-base py-2 px-3",
+  xl: "text-lg py-3 px-4",
+};
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
@@ -20,16 +28,16 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       onChange,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [isPasswordShowed, setIsPasswordShowed] = useState(false);
     const [numberValue, setNumberValue] = useState(
-      props.value?.toString() || ""
+      props.value?.toString() || "",
     );
 
-    const inputClassName = `input ${inputSize} ${errorMessage ? "error" : ""}`;
-    const labelClassName = `label`;
-    const errorMessageClassName = `error-message`;
+    const styles = {
+      inputStyle: ` w-full rounded border ${inputSizeStyles[inputSize]} focus:outline-none focus:ring-2 focus:ring-slate-400 placeholder:text-md ${errorMessage ? "border-red-500" : "border-gray-500"}`,
+    };
 
     useEffect(() => {
       if (type === "number" && props.value !== undefined) {
@@ -54,7 +62,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     const handleNumberInputChange = (
-      e: React.ChangeEvent<HTMLInputElement>
+      e: React.ChangeEvent<HTMLInputElement>,
     ) => {
       const value = e.target.value;
       if (value === "" || /^-?\d*\.?\d*$/.test(value)) {
@@ -66,15 +74,15 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       switch (type) {
         case "password":
           return (
-            <div className="input-container">
+            <div className="relative">
               <input
                 type={isPasswordShowed ? "text" : "password"}
-                className={`${inputClassName} has-icon-right`}
+                className={`${styles.inputStyle} pr-10`}
                 ref={ref}
                 {...props}
               />
               <button
-                className="show-password-button"
+                className="absolute right-2 top-1/2 -translate-y-1/2 transform"
                 type="button"
                 onClick={() => setIsPasswordShowed((prev) => !prev)}
               >
@@ -84,11 +92,11 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           );
         case "search":
           return (
-            <div className="input-container">
-              <BiSearch className="input-search-logo" />
+            <div className="relative">
+              <BiSearch className="absolute left-2 top-1/2 -translate-y-1/2 transform text-gray-400" />
               <input
                 type="text"
-                className={`${inputClassName} has-icon-left`}
+                className={`${styles.inputStyle} pl-10`}
                 ref={ref}
                 {...props}
               />
@@ -96,9 +104,9 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           );
         case "number":
           return (
-            <div className="input-container">
+            <div className="flex items-center">
               <button
-                className="number-button"
+                className="rounded-l bg-gray-200 p-2 hover:bg-gray-300"
                 type="button"
                 onClick={() => handleNumberChange(-1)}
               >
@@ -108,14 +116,14 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
                 type="text"
                 inputMode="numeric"
                 pattern="-?\d*\.?\d*"
-                className={`${inputClassName} has-icon-both`}
+                className={`${styles.inputStyle} text-center`}
                 ref={ref}
                 value={numberValue}
                 onChange={handleNumberInputChange}
                 {...props}
               />
               <button
-                className="number-button"
+                className="rounded-r bg-gray-200 p-2 hover:bg-gray-300"
                 type="button"
                 onClick={() => handleNumberChange(1)}
               >
@@ -127,7 +135,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           return (
             <input
               type={type}
-              className={inputClassName}
+              className={styles.inputStyle}
               ref={ref}
               onChange={onChange}
               {...props}
@@ -137,19 +145,19 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     return (
-      <div className="textfield-container">
+      <>
         {label && (
-          <label htmlFor={id} className={labelClassName}>
+          <label htmlFor={id} className="mb-1 block font-medium">
             {label}
           </label>
         )}
         {renderInput()}
         {errorMessage && (
-          <span className={errorMessageClassName}>{errorMessage}</span>
+          <span className="mt-1 text-sm text-red-500">{errorMessage}</span>
         )}
-      </div>
+      </>
     );
-  }
+  },
 );
 
 export default TextField;

@@ -15,10 +15,10 @@ const HomePage = () => {
 
   return (
     <>
-      <section className="hero-section">
+      <section className="py-12">
         <CatCarousel />
       </section>
-      <section className="cat-list-section">
+      <section className="grid grid-cols-[repeat(auto-fit,_minmax(240px,_1fr))] gap-4">
         {cats.map((cat) => (
           <CatCard cat={cat} />
         ))}

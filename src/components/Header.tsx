@@ -9,25 +9,25 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="header">
-      <nav className="nav flex-between base-gap">
-        <div className="nav-brand flex-between">
-          <FaDog />
-          Big Floppa
+    <header className="fixed top-0 z-10 w-full border-b bg-slate-100">
+      <nav className="container mx-auto flex items-center justify-between py-4">
+        <div className="flex items-center justify-between gap-2 text-orange-500">
+          <FaDog className="text-2xl" />
+          <span className="text-2xl font-semibold">Big Floppa</span>
         </div>
-        <div className="nav-center">
+        <div className="">
           <TextField type="search" placeholder="search some cat" />
         </div>
-        <div className="nav-right flex-between base-gap">
+        <div className="">
           {user ? (
-            <NavLink to="/user-profile">
+            <NavLink to="/user-settings">
               <img
                 src={
                   user.profile?.profilePicture ||
                   "https://i.pinimg.com/474x/f0/8e/7c/f08e7c7b45981e078036308e45110082.jpg"
                 }
                 alt="profile picture"
-                className="nav-profile-picture"
+                className="h-8 w-8 rounded-full object-cover object-center"
               />
             </NavLink>
           ) : (

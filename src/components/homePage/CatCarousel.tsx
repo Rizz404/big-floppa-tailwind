@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 const IMAGES = [
@@ -9,35 +9,64 @@ const IMAGES = [
 
 const CatCarousel = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const [isManually, setIsManually] = useState(false);
 
   const nextImage = () => {
+    setIsManually(true);
     setCurrentImage((prev) => (prev + 1) % IMAGES.length);
   };
 
   const prevImage = () => {
+    setIsManually(true);
     setCurrentImage((prev) => (prev === 0 ? IMAGES.length - 1 : prev - 1));
   };
 
+  useEffect(() => {
+    let timer;
+
+    if (!isManually) {
+      timer = setInterval(() => {
+        nextImage();
+      }, 5000); // otomatis geser setiap 3 detik
+    } else {
+      timer = setTimeout(() => {
+        setIsManually(false);
+      }, 5000);
+    }
+
+    return () => {
+      clearInterval(timer);
+      clearTimeout(timer);
+    };
+  }, [isManually]);
+
   return (
-    <div className="carousel-container">
-      <div
-        className="carousel-images"
-        style={{ transform: `translateX(-${currentImage * 100}%)` }}
-      >
-        {IMAGES.map((src, index) => (
+    <div className="group relative overflow-hidden">
+      <div className="relative h-[340px] w-full">
+        {IMAGES.map((image, index) => (
           <img
             key={index}
-            className="carousel-image"
-            src={src}
-            alt={`Slide ${index}`}
+            src={image}
+            alt={`slide ${index}`}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-out ${
+              index === currentImage ? "opacity-100" : "opacity-0"
+            }`}
           />
         ))}
       </div>
-      <div className="carousel-nav flex-between base-gap">
-        <button type="button" onClick={prevImage}>
+      <div className="absolute top-1/2 flex w-full -translate-y-1/2 justify-between px-3 text-3xl">
+        <button
+          type="button"
+          onClick={prevImage}
+          className="rounded-full bg-white p-1 opacity-0 transition duration-300 ease-out group-hover:opacity-100"
+        >
           <BsArrowLeft />
         </button>
-        <button type="button" onClick={nextImage}>
+        <button
+          type="button"
+          onClick={nextImage}
+          className="rounded-full bg-white p-1 opacity-0 transition duration-300 ease-out group-hover:opacity-100"
+        >
           <BsArrowRight />
         </button>
       </div>

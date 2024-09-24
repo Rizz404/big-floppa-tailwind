@@ -13,6 +13,12 @@ interface SelectOptionProps extends SelectHTMLAttributes<HTMLSelectElement> {
   optionPlaceHolder?: string;
 }
 
+const selectOptionSizeStyles = {
+  sm: "text-sm py-1 px-2",
+  md: "text-base py-2 px-3",
+  xl: "text-lg py-3 px-4",
+};
+
 const SelectOption = forwardRef<HTMLSelectElement, SelectOptionProps>(
   (
     {
@@ -24,23 +30,17 @@ const SelectOption = forwardRef<HTMLSelectElement, SelectOptionProps>(
       label,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const selectOptionClassName = `select-option ${selectOptionSize} ${
-      errorMessage ? "error" : ""
-    }`;
-    const labelClassName = `label`;
-    const errorMessageClassName = `error-message`;
-
     return (
-      <div className="textfield-container">
-        <label htmlFor={id} className={labelClassName}>
+      <>
+        <label htmlFor={id} className="mb-1 block font-medium">
           {label}
         </label>
         <select
           id={id}
           ref={ref}
-          className={selectOptionClassName}
+          className={`w-full focus:outline-none focus:ring-2 ${selectOptionSizeStyles[selectOptionSize]} rounded border ${errorMessage ? "border-red-500" : "border-gray-500"}`}
           {...props}
           defaultValue=""
         >
@@ -54,11 +54,11 @@ const SelectOption = forwardRef<HTMLSelectElement, SelectOptionProps>(
               {option.label}
             </option>
           ))}
-        </select>{" "}
-        <span className={errorMessageClassName}>{errorMessage}</span>
-      </div>
+        </select>
+        <span className="text-xs text-red-500">{errorMessage}</span>
+      </>
     );
-  }
+  },
 );
 
 export default SelectOption;

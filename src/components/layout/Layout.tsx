@@ -4,9 +4,9 @@ import Footer from "../Footer";
 
 const Layout = () => {
   return (
-    <div className="layout">
+    <div className="relative">
       <Header />
-      <main className="main-container">
+      <main className="container mx-auto mt-12">
         <Outlet />
       </main>
       <Footer />

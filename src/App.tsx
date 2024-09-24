@@ -24,6 +24,7 @@ import BuyCatProvider from "./context/BuyCatContext";
 import BuyNowPage from "./pages/user/BuyNowPage";
 import AuthPage from "./pages/user/AuthPage";
 import UserProfilePage from "./pages/user/UserProfilePage";
+import UserAddressPage from "./pages/user/UserAddressPage";
 
 const App = createBrowserRouter(
   createRoutesFromElements(
@@ -31,7 +32,10 @@ const App = createBrowserRouter(
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/user-profile" element={<UserProfilePage />} />
+        <Route path="/user-settings">
+          <Route index element={<UserProfilePage />} />
+          <Route path="address" element={<UserAddressPage />} />
+        </Route>
         <Route
           path="/cat/:catId"
           element={
