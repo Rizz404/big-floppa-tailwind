@@ -39,7 +39,7 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
     };
 
     return (
-      <>
+      <div>
         {label && <label className="mb-1 block font-medium">{label}</label>}
         <div {...getRootProps({ className: styles.inputStyle })}>
           <input {...getInputProps()} ref={ref} />
@@ -55,7 +55,7 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
             </p>
           ))}
         <span className="mt-1 text-sm text-red-500">{errorMessage}</span>
-      </>
+      </div>
     );
   },
 );

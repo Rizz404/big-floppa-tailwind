@@ -5,16 +5,17 @@ import {
   MutationResponse,
   PaginatedResponse,
 } from "../types/Response";
-import { Cat } from "../types/Cat";
+import { Cat, CatPicture } from "../types/Cat";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { BuyCatNow, UpsertCatSchema } from "../lib/zod/catSchema";
+import { BasePaginationParams } from "../types/Query";
 
 export const useUpsertCat = ({ catId }: { catId?: string }) => {
   const navigate = useNavigate();
 
   return useMutation<MutationResponse<Cat>, CustomAxiosError, UpsertCatSchema>({
-    mutationKey: ["create", "cat"],
+    mutationKey: ["post", "cat"],
     mutationFn: async (data) => {
       const formData = new FormData();
 
@@ -46,13 +47,36 @@ export const useUpsertCat = ({ catId }: { catId?: string }) => {
   });
 };
 
-export const useBuyCatNow = ({ catId }: { catId?: string }) => {
+export const useAddCatPicturesById = ({ catId }: { catId?: string }) => {
+  const navigate = useNavigate();
+
+  return useMutation<
+    MutationResponse<CatPicture>,
+    CustomAxiosError,
+    { files: File[] }
+  >({
+    mutationKey: ["post", "cat-pictures", catId],
+    mutationFn: async (data) => {
+      return (await axiosInstance.post(`/cats/pictures/${catId}`, data)).data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+      navigate("/admin/cats");
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
+  });
+};
+
+export const useBuyCatById = ({ catId }: { catId?: string }) => {
   const navigate = useNavigate();
 
   return useMutation<MutationResponse<Cat>, CustomAxiosError, BuyCatNow>({
-    mutationKey: ["post", "buy-now"],
+    mutationKey: ["post", "buy"],
     mutationFn: async (data) => {
-      return (await axiosInstance.post(`/cats/buy-now/${catId}`, data)).data;
+      return (await axiosInstance.post(`/cats/buy/${catId}`, data)).data;
     },
     onSuccess: (response) => {
       toast.success(response.message);
@@ -65,11 +89,13 @@ export const useBuyCatNow = ({ catId }: { catId?: string }) => {
   });
 };
 
-export const useGetCats = () => {
+export const useGetCats = ({ page, limit, order }: BasePaginationParams) => {
   const { data, ...rest } = useQuery<PaginatedResponse<Cat>, CustomAxiosError>({
-    queryKey: ["cats"],
+    queryKey: ["cats", page, limit, order],
     queryFn: async () => {
-      return (await axiosInstance.get("/cats")).data;
+      return (
+        await axiosInstance.get("/cats", { params: { page, limit, order } })
+      ).data;
     },
   });
 
@@ -88,5 +114,47 @@ export const useGetCatById = ({ catId }: { catId?: string }) => {
       return (await axiosInstance.get(`/cats/${catId}`)).data;
     },
     enabled: !!catId,
+  });
+};
+
+export const useDeleteCatById = ({ catId }: { catId: string }) => {
+  const navigate = useNavigate();
+
+  return useMutation<MutationResponse<Cat>, CustomAxiosError, void>({
+    mutationKey: ["delete", "cat", catId],
+    mutationFn: async () => {
+      return (await axiosInstance.delete(`/cats/${catId}`)).data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+      navigate("/admin/cats");
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
+  });
+};
+
+export const useDeleteCatPicturesById = ({ catId }: { catId?: string }) => {
+  const navigate = useNavigate();
+
+  return useMutation<
+    MutationResponse<CatPicture>,
+    CustomAxiosError,
+    { catPictureIds: string[] }
+  >({
+    mutationKey: ["delete", "cat-pictures", catId],
+    mutationFn: async (data) => {
+      return (await axiosInstance.post(`/cats/pictures/${catId}`, data)).data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+      navigate("/admin/cats");
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
   });
 };

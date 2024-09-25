@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <div className="relative">
       <Header />
-      <main className="container mx-auto mt-12">
+      <main className="container mx-auto mt-24">
         <Outlet />
       </main>
       <Footer />

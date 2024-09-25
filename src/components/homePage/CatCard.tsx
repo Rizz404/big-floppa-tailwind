@@ -18,7 +18,7 @@ const CatCard = ({ cat }: CatCardProps) => {
   return (
     <div
       onClick={() => navigate(`/cat/${cat.id}`)}
-      className="flex cursor-pointer flex-col justify-between rounded-md shadow-md"
+      className="flex cursor-pointer flex-col justify-between rounded-md shadow-md transition duration-300 ease-out hover:-translate-y-2"
     >
       <div className="relative">
         {cat.catPictures && (
@@ -42,7 +42,7 @@ const CatCard = ({ cat }: CatCardProps) => {
           <h3 className="font-medium capitalize">
             {cat.name || "Kucing Tanpa Nama"}
           </h3>
-          <p className="rounded border border-slate-400 p-1 text-sm">
+          <p className="rounded border border-slate-400 p-1 text-sm hover:border-green-500">
             {cat.catBreed.name}
           </p>
         </div>

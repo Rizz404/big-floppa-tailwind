@@ -25,6 +25,8 @@ import BuyNowPage from "./pages/user/BuyNowPage";
 import AuthPage from "./pages/user/AuthPage";
 import UserProfilePage from "./pages/user/UserProfilePage";
 import UserAddressPage from "./pages/user/UserAddressPage";
+import UserSettingsPage from "./pages/user/UserSettingsPage";
+import CartPage from "./pages/user/CartPage";
 
 const App = createBrowserRouter(
   createRoutesFromElements(
@@ -32,10 +34,11 @@ const App = createBrowserRouter(
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/user-settings">
+        <Route path="/user-settings" element={<UserSettingsPage />}>
           <Route index element={<UserProfilePage />} />
           <Route path="address" element={<UserAddressPage />} />
         </Route>
+        <Route path="/cart" element={<CartPage />} />
         <Route
           path="/cat/:catId"
           element={
@@ -103,8 +106,8 @@ const App = createBrowserRouter(
           />
         </Route>
       </Route>
-    </>
-  )
+    </>,
+  ),
 );
 
 export default App;

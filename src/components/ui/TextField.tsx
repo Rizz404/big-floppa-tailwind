@@ -145,7 +145,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     return (
-      <>
+      <div>
         {label && (
           <label htmlFor={id} className="mb-1 block font-medium">
             {label}
@@ -155,7 +155,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         {errorMessage && (
           <span className="mt-1 text-sm text-red-500">{errorMessage}</span>
         )}
-      </>
+      </div>
     );
   },
 );

@@ -45,14 +45,22 @@ export const useUpsertBreed = ({ breedId }: { breedId?: string }) => {
   });
 };
 
-export const useGetBreeds = () => {
+export const useGetBreeds = ({
+  page = 1,
+  limit = 10,
+}: {
+  page: number;
+  limit?: number;
+}) => {
   const { data, ...rest } = useQuery<
     PaginatedResponse<Breed>,
     CustomAxiosError
   >({
-    queryKey: ["cat-breeds"],
+    queryKey: ["cat-breeds", page],
     queryFn: async () => {
-      return (await axiosInstance.get("/cat-breeds")).data;
+      return (
+        await axiosInstance.get("/cat-breeds", { params: { page, limit } })
+      ).data;
     },
   });
 

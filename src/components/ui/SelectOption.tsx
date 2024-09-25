@@ -33,7 +33,7 @@ const SelectOption = forwardRef<HTMLSelectElement, SelectOptionProps>(
     ref,
   ) => {
     return (
-      <>
+      <div>
         <label htmlFor={id} className="mb-1 block font-medium">
           {label}
         </label>
@@ -56,7 +56,7 @@ const SelectOption = forwardRef<HTMLSelectElement, SelectOptionProps>(
           ))}
         </select>
         <span className="text-xs text-red-500">{errorMessage}</span>
-      </>
+      </div>
     );
   },
 );

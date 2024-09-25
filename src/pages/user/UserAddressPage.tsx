@@ -29,8 +29,8 @@ const UserAddressPage = () => {
   };
 
   return (
-    <section className="user-address-section">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex-col base-gap">
+    <section className="">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <TextField
           placeholder="input your country"
           label="Country"
