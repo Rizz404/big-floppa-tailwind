@@ -10,6 +10,7 @@ import { CreateUserSchema, UpdateUserProfile } from "../lib/zod/userSchema";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
+import { BasePaginationParams } from "../types/Query";
 
 export const useCreateUser = () => {
   const navigate = useNavigate();
@@ -34,14 +35,16 @@ export const useCreateUser = () => {
   });
 };
 
-export const useGetUsers = () => {
+export const useGetUsers = ({ page, limit, order }: BasePaginationParams) => {
   const { data, ...rest } = useQuery<PaginatedResponse<User>, CustomAxiosError>(
     {
-      queryKey: ["users"],
+      queryKey: ["users", page, limit, order],
       queryFn: async () => {
-        return (await axiosInstance.get("/users")).data;
+        return (
+          await axiosInstance.get("/users", { params: { page, limit, order } })
+        ).data;
       },
-    }
+    },
   );
 
   return {

@@ -9,6 +9,7 @@ import { ShippingService } from "../types/ShippingService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { UpsertShippingServiceSchema } from "../lib/zod/shippingServiceSchema";
+import { BasePaginationParams } from "../types/Query";
 
 export const useUpsertShippingService = ({
   shippingServiceId,
@@ -28,7 +29,7 @@ export const useUpsertShippingService = ({
         return (
           await axiosInstance.patch(
             `/shipping-services/${shippingServiceId}`,
-            data
+            data,
           )
         ).data;
       }
@@ -45,14 +46,22 @@ export const useUpsertShippingService = ({
   });
 };
 
-export const useGetShippingServices = () => {
+export const useGetShippingServices = ({
+  page,
+  limit,
+  order,
+}: BasePaginationParams) => {
   const { data, ...rest } = useQuery<
     PaginatedResponse<ShippingService>,
     CustomAxiosError
   >({
-    queryKey: ["shipping-services"],
+    queryKey: ["shipping-services", page, limit, order],
     queryFn: async () => {
-      return (await axiosInstance.get("/shipping-services")).data;
+      return (
+        await axiosInstance.get("/shipping-services", {
+          params: { page, limit, order },
+        })
+      ).data;
     },
   });
 
@@ -78,4 +87,28 @@ export const useGetShippingServiceById = ({
     },
     enabled: !!shippingServiceId,
   });
+};
+
+export const useDeleteOrderById = ({
+  shippingServiceId,
+}: {
+  shippingServiceId?: string;
+}) => {
+  return useMutation<MutationResponse<ShippingService>, CustomAxiosError, void>(
+    {
+      mutationKey: ["delete", "shipping-service", shippingServiceId],
+      mutationFn: async () => {
+        return (
+          await axiosInstance.delete(`/shipping-services/${shippingServiceId}`)
+        ).data;
+      },
+      onSuccess: (response) => {
+        toast.success(response.message);
+      },
+      onError: (error) => {
+        toast.error(error.response?.data.message);
+        console.log(error.response?.data.message);
+      },
+    },
+  );
 };

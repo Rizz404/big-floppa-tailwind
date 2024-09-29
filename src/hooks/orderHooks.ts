@@ -7,50 +7,48 @@ import {
 } from "../types/Response";
 import { Order } from "../types/Order";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-// import { UpsertOrderSchema } from "../lib/zod/OrderSchema";
+import { BasePaginationParams } from "../types/Query";
 
-// export const useUpsertOrder = ({
-//   orderId,
-// }: {
-//   orderId?: string;
-// }) => {
-//   const navigate = useNavigate();
-
-//   return useMutation<
-//     MutationResponse<Order>,
-//     CustomAxiosError,
-//     UpsertOrderSchema
-//   >({
-//     mutationKey: ["create", "order"],
-//     mutationFn: async (data) => {
-//       if (orderId) {
-//         return (
-//           await axiosInstance.patch(`/orders/${orderId}`, data)
-//         ).data;
-//       }
-//       return (await axiosInstance.post("/orders", data)).data;
-//     },
-//     onSuccess: (response) => {
-//       toast.success(response.message);
-//       navigate("/admin/orders");
-//     },
-//     onError: (error) => {
-//       toast.error(error.response?.data.message);
-//       console.log(error.response?.data.message);
-//     },
-//   });
-// };
-
-export const useGetOrders = () => {
+export const useGetOrders = ({ page, limit, order }: BasePaginationParams) => {
   const { data, ...rest } = useQuery<
     PaginatedResponse<Order>,
     CustomAxiosError
   >({
-    queryKey: ["orders"],
+    queryKey: ["orders", page, limit, order],
     queryFn: async () => {
-      return (await axiosInstance.get("/orders")).data;
+      return (
+        await axiosInstance.get("/orders", { params: { page, limit, order } })
+      ).data;
     },
+  });
+
+  return {
+    orders: data?.data || [],
+    paginationState: data?.paginationState,
+    additionalInfo: data?.additionalInfo,
+    ...rest,
+  };
+};
+
+export const useGetOrderItemsByOrderId = ({
+  orderId,
+  page,
+  limit,
+  order,
+}: BasePaginationParams & { orderId?: string }) => {
+  const { data, ...rest } = useQuery<
+    PaginatedResponse<Order>,
+    CustomAxiosError
+  >({
+    queryKey: ["orders", orderId, page, limit, order],
+    queryFn: async () => {
+      return (
+        await axiosInstance.get(`/orders/${orderId}`, {
+          params: { page, limit, order },
+        })
+      ).data;
+    },
+    enabled: !!orderId,
   });
 
   return {
@@ -68,5 +66,37 @@ export const useGetOrderById = ({ orderId }: { orderId?: string }) => {
       return (await axiosInstance.get(`/orders/${orderId}`)).data;
     },
     enabled: !!orderId,
+  });
+};
+
+export const useUpdateOrderById = ({ orderId }: { orderId?: string }) => {
+  return useMutation<MutationResponse<Order>, CustomAxiosError, Order>({
+    mutationKey: ["patch", "order", orderId],
+    mutationFn: async (data) => {
+      return (await axiosInstance.patch(`/orders/${orderId}`, data)).data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
+  });
+};
+
+export const useDeleteOrderById = ({ orderId }: { orderId?: string }) => {
+  return useMutation<MutationResponse<Order>, CustomAxiosError, void>({
+    mutationKey: ["delete", "order", orderId],
+    mutationFn: async () => {
+      return (await axiosInstance.delete(`/orders/${orderId}`)).data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
   });
 };

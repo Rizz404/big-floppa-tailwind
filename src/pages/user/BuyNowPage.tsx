@@ -5,7 +5,7 @@ import useBuyCat from "../../hooks/useBuyCat";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BuyCatNow, buyCatNow } from "../../lib/zod/catSchema";
-import { useBuyCatNow } from "../../hooks/catHooks";
+import { useBuyCatById } from "../../hooks/catHooks";
 import SelectOption from "../../components/ui/SelectOption";
 import { useGetPaymentMethods } from "../../hooks/paymentMethodHooks";
 import { useGetShippingServices } from "../../hooks/shippingServiceHooks";
@@ -21,7 +21,7 @@ const BuyNowPage = () => {
     defaultValues: { amount: catSelected?.amount },
   });
 
-  const { mutate, isPending } = useBuyCatNow({ catId: catSelected?.cat.id });
+  const { mutate, isPending } = useBuyCatById({ catId: catSelected?.cat.id });
   const { shippingServices } = useGetShippingServices();
   const { paymentMethods } = useGetPaymentMethods();
 
@@ -34,7 +34,7 @@ const BuyNowPage = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="buy-now-form">
         <div className="left-container">
           <h4>Cat Selected</h4>
-          <div className="cat-selected-container flex-col base-gap">
+          <div className="cat-selected-container base-gap flex-col">
             <p>Cat Owner: {catSelected.cat.user.username}</p>
             <div className="cat-selected">
               {catSelected.cat.catPictures && (

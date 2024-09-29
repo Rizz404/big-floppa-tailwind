@@ -9,6 +9,7 @@ import { Transaction } from "../types/Transaction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { UpsertTransactionSchema } from "../lib/zod/transactionSchema";
+import { BasePaginationParams } from "../types/Query";
 
 export const useUpsertTransaction = ({
   transactionId,
@@ -42,14 +43,22 @@ export const useUpsertTransaction = ({
   });
 };
 
-export const useGetTransactions = () => {
+export const useGetTransactions = ({
+  page,
+  limit,
+  order,
+}: BasePaginationParams) => {
   const { data, ...rest } = useQuery<
     PaginatedResponse<Transaction>,
     CustomAxiosError
   >({
-    queryKey: ["transactions"],
+    queryKey: ["transactions", page, limit, order],
     queryFn: async () => {
-      return (await axiosInstance.get("/transactions")).data;
+      return (
+        await axiosInstance.get("/transactions", {
+          params: { page, limit, order },
+        })
+      ).data;
     },
   });
 
@@ -72,5 +81,26 @@ export const useGetTransactionById = ({
       return (await axiosInstance.get(`/transactions/${transactionId}`)).data;
     },
     enabled: !!transactionId,
+  });
+};
+
+export const useDeleteTransactionById = ({
+  transactionId,
+}: {
+  transactionId?: string;
+}) => {
+  return useMutation<MutationResponse<Transaction>, CustomAxiosError, void>({
+    mutationKey: ["delete", "transaction", transactionId],
+    mutationFn: async () => {
+      return (await axiosInstance.delete(`/transactions/${transactionId}`))
+        .data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
   });
 };

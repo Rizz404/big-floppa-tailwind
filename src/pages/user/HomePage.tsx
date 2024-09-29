@@ -4,7 +4,7 @@ import CatCarousel from "../../components/homePage/CatCarousel";
 import PopularBreed from "../../components/homePage/PopularBreed";
 
 const HomePage = () => {
-  const { cats, isLoading, isError, error } = useGetCats();
+  const { cats, isLoading, isError, error } = useGetCats({});
 
   if (isLoading) {
     return <p>Loading</p>;
@@ -24,7 +24,7 @@ const HomePage = () => {
       </section>
       <section className="mt-12 grid grid-cols-[repeat(auto-fit,_minmax(240px,_1fr))] gap-4">
         {cats.map((cat) => (
-          <CatCard cat={cat} />
+          <CatCard cat={cat} key={cat.id} />
         ))}
       </section>
     </>

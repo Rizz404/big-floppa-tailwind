@@ -9,6 +9,7 @@ import { PaymentMethod } from "../types/PaymentMethod";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { UpsertPaymentMethodSchema } from "../lib/zod/paymentMethodSchema";
+import { BasePaginationParams } from "../types/Query";
 
 export const useUpsertPaymentMethod = ({
   paymentMethodId,
@@ -42,14 +43,22 @@ export const useUpsertPaymentMethod = ({
   });
 };
 
-export const useGetPaymentMethods = () => {
+export const useGetPaymentMethods = ({
+  page,
+  limit,
+  order,
+}: BasePaginationParams) => {
   const { data, ...rest } = useQuery<
     PaginatedResponse<PaymentMethod>,
     CustomAxiosError
   >({
-    queryKey: ["payment-methods"],
+    queryKey: ["payment-methods", page, limit, order],
     queryFn: async () => {
-      return (await axiosInstance.get("/payment-methods")).data;
+      return (
+        await axiosInstance.get("/payment-methods", {
+          params: { page, limit, order },
+        })
+      ).data;
     },
   });
 
@@ -73,5 +82,26 @@ export const useGetPaymentMethodById = ({
         .data;
     },
     enabled: !!paymentMethodId,
+  });
+};
+
+export const useDeletePaymentMethodById = ({
+  paymentMethodId,
+}: {
+  paymentMethodId?: string;
+}) => {
+  return useMutation<MutationResponse<PaymentMethod>, CustomAxiosError, void>({
+    mutationKey: ["delete", "payment-method", paymentMethodId],
+    mutationFn: async () => {
+      return (await axiosInstance.delete(`/payment-methods/${paymentMethodId}`))
+        .data;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.log(error.response?.data.message);
+    },
   });
 };

@@ -8,7 +8,6 @@ import SelectOption from "../../components/ui/SelectOption";
 import Button from "../../components/ui/Button";
 import FileInput from "../../components/ui/FileInput";
 import { useState } from "react";
-import { useLogout } from "../../hooks/authHooks";
 
 const UserProfilePage = () => {
   const [profilePicture, setProfilePicture] = useState<{
@@ -17,7 +16,6 @@ const UserProfilePage = () => {
   } | null>(null);
   const { user } = useAuth();
   const { mutate, isPending } = useUpdateUserProfile();
-  const { mutate: logout, isPending: isPendingLogout } = useLogout();
 
   const {
     register,
@@ -64,19 +62,37 @@ const UserProfilePage = () => {
 
   return (
     <div className="">
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2">
-        {user?.profile && user?.profile.profilePicture ? (
-          <img
-            src={user?.profile.profilePicture as string}
-            alt="profile picture"
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-3 gap-8"
+      >
+        <div>
+          {user?.profile && user?.profile.profilePicture ? (
+            <img
+              src={user?.profile.profilePicture as string}
+              alt="profile picture"
+              className="w-full rounded border border-slate-300 object-cover"
+            />
+          ) : (
+            <img
+              src="https://i.pinimg.com/236x/3c/e7/57/3ce757e67dce98bac2c3320c3f979ccc.jpg"
+              alt="hehe"
+              className="w-full rounded border border-slate-300 object-cover"
+            />
+          )}
+          <FileInput
+            containerClassName="mt-2"
+            onDropFiles={onDrop}
+            accept={{
+              "profilePicture/png": [".png"],
+              "profilePicture/jpg": [".jpg"],
+              "profilePicture/jpeg": [".jpeg"],
+            }}
+            errorMessage={errors.profilePicture?.message}
+            placeholder={`${user?.profile && user.profile.profilePicture ? "Change profile picture" : "Upload profile picture"}`}
           />
-        ) : (
-          <img
-            src="https://i.pinimg.com/236x/3c/e7/57/3ce757e67dce98bac2c3320c3f979ccc.jpg"
-            alt="hehe"
-          />
-        )}
-        <div className="flex flex-col gap-4">
+        </div>
+        <div className="col-span-2 flex flex-col gap-4">
           <TextField
             placeholder="input your username"
             label="Username"
@@ -127,16 +143,7 @@ const UserProfilePage = () => {
             {...register("bio")}
             errorMessage={errors.bio?.message}
           />
-          <FileInput
-            label="Image"
-            onDropFiles={onDrop}
-            accept={{
-              "profilePicture/png": [".png"],
-              "profilePicture/jpg": [".jpg"],
-              "profilePicture/jpeg": [".jpeg"],
-            }}
-            errorMessage={errors.profilePicture?.message}
-          />
+
           {profilePicture && profilePicture.preview && (
             <img src={profilePicture.preview} alt="profile-picture" />
           )}
@@ -145,9 +152,6 @@ const UserProfilePage = () => {
           </Button>
         </div>
       </form>
-      <Button type="button" onClick={() => logout()} disabled={isPendingLogout}>
-        Logout
-      </Button>
     </div>
   );
 };

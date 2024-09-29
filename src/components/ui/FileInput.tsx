@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
+import clx from "clsx";
 
 interface FileInputProps extends DropzoneOptions {
   placeholder?: string;
@@ -8,6 +9,7 @@ interface FileInputProps extends DropzoneOptions {
   inputSize?: "sm" | "md" | "xl";
   onDropFiles: (file: File[]) => void;
   imageNames?: string[];
+  containerClassName?: string; // Tambahkan prop untuk class container
 }
 
 const fileInputSizeStyles = {
@@ -25,6 +27,7 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
       onDropFiles,
       placeholder,
       imageNames,
+      containerClassName, // Ambil prop containerClassName
       ...props
     },
     ref,
@@ -34,8 +37,14 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
       onDrop: (acceptedFiles: File[]) => onDropFiles(acceptedFiles),
     });
 
+    // Gunakan `clx` untuk menggabungkan class default dan class dari props
     const styles = {
-      inputStyle: ` w-full rounded border border-dashed cursor-pointer ${fileInputSizeStyles[inputSize]} ${errorMessage ? "border-red-500" : "border-gray-500"}`,
+      inputStyle: clx(
+        "w-full rounded border border-dashed cursor-pointer",
+        fileInputSizeStyles[inputSize],
+        errorMessage ? "border-red-500" : "border-gray-500",
+        containerClassName, // Tambahkan className yang diberikan
+      ),
     };
 
     return (
