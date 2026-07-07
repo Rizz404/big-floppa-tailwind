@@ -84,16 +84,18 @@ export const useGetUserAddressesByUser = ({
   };
 };
 
-export const useUpdateUserAddress = ({ addressId }: { addressId: string }) => {
+// todo: Mungkin akan dirubah semua struktur untuk update jadi seperti ini
+export const useUpdateUserAddress = () => {
   return useMutation<
     MutationResponse<UserAddress>,
     CustomAxiosError,
-    UserAddressSchema
+    { addressId: string; address: UserAddressSchema }
   >({
     mutationKey: ["patch", "user-addresses"],
-    mutationFn: async (data) => {
-      return (await axiosInstance.post(`/user-addresses/${addressId}`, data))
-        .data;
+    mutationFn: async ({ addressId, address }) => {
+      return (
+        await axiosInstance.patch(`/user-addresses/${addressId}`, address)
+      ).data;
     },
     onSuccess: (response) => {
       toast.success(response.message);

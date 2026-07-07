@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 type variant = "contained" | "outlined";
@@ -19,11 +20,14 @@ const buttonSizeStyles = {
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "contained", size = "md", children, ...props }, ref) => {
+  (
+    { variant = "contained", size = "md", children, className, ...props },
+    ref,
+  ) => {
     return (
       <button
         ref={ref}
-        className={`rounded ${buttonVariantStyles[variant]} ${buttonSizeStyles[size]} transition duration-300 ease-in-out hover:bg-orange-600 disabled:opacity-50`}
+        className={`${clsx(`rounded ${buttonVariantStyles[variant]} ${buttonSizeStyles[size]} transition duration-300 ease-in-out hover:bg-orange-600 disabled:opacity-50`, className)}`}
         {...props}
       >
         {children}

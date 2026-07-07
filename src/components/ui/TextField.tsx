@@ -1,6 +1,7 @@
 import { InputHTMLAttributes, forwardRef, useState, useEffect } from "react";
 import { BiSearch, BiMinus, BiPlus } from "react-icons/bi";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import clsx from "clsx";
 
 type InputSize = "sm" | "md" | "xl";
 
@@ -25,6 +26,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       errorMessage,
       id,
       label,
+      className,
       onChange,
       ...props
     },
@@ -145,7 +147,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     return (
-      <div>
+      <div className={clsx(className)}>
         {label && (
           <label htmlFor={id} className="mb-1 block font-medium">
             {label}

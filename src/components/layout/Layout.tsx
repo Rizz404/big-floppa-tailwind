@@ -4,7 +4,7 @@ import Footer from "../Footer";
 
 const Layout = () => {
   return (
-    <div className="relative">
+    <div className="relative h-screen">
       <Header />
       <main className="container mx-auto mt-24">
         <Outlet />
